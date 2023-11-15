@@ -3,8 +3,10 @@ using CommonLayer.Model;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using RepoLayer.Models;
 using System.Linq;
+using System;
 
 namespace BookStore.Controllers
 {
@@ -17,10 +19,12 @@ namespace BookStore.Controllers
     {
         private readonly IAdminUserBusiness adminBusiness;
         private readonly BookStoreDBContext bookStoreDBContext;
-        public AdminController(IAdminUserBusiness adminBusiness,BookStoreDBContext bookStoreDBContext)
+        private readonly ILogger<AdminController> logger;
+        public AdminController(IAdminUserBusiness adminBusiness,BookStoreDBContext bookStoreDBContext,ILogger<AdminController> logger)
         {
             this.adminBusiness = adminBusiness;
             this.bookStoreDBContext = bookStoreDBContext;
+            this.logger = logger;
         }
         /// <summary>
         /// Admin Registration
@@ -44,10 +48,10 @@ namespace BookStore.Controllers
                     return BadRequest(new { success = false, Message = "Admin Registration Failed."});
                 }
             }
-            catch (System.Exception)
+            catch (Exception ex)
             {
-
-                throw;
+                logger.LogError(ex ,"Error during Admin registration");
+                return BadRequest(new { Success = false, Message = "Admin registration can not be completed" });
             }
         }
         /// <summary>
@@ -79,10 +83,10 @@ namespace BookStore.Controllers
                     return BadRequest(new { success = false, Message = "Admin Login Failed. User does not have the Admin role." });
                 }
             }
-            catch (System.Exception)
+            catch (Exception ex)
             {
-
-                throw;
+                logger.LogError(ex, "Error during Admin Login");
+                return BadRequest(new { Success = false, Message = "Admin login cannot be completed."});
             }
         }
     }
