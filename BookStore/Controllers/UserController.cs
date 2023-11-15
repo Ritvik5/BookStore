@@ -2,9 +2,11 @@
 using CommonLayer.Model;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using RepoLayer.Models;
 using System.Linq;
 using System.Security.Claims;
+using System;
 
 namespace BookStore.Controllers
 {
@@ -17,10 +19,12 @@ namespace BookStore.Controllers
     {
         private readonly IAdminUserBusiness userBusiness;
         private readonly BookStoreDBContext dbContext;
-        public UserController(IAdminUserBusiness userBusiness, BookStoreDBContext dbContext)
+        private readonly ILogger logger;
+        public UserController(IAdminUserBusiness userBusiness, BookStoreDBContext dbContext,ILogger logger)
         {
             this.userBusiness = userBusiness;
             this.dbContext = dbContext;
+            this.logger = logger;
         }
         /// <summary>
         /// User Registration
@@ -43,10 +47,10 @@ namespace BookStore.Controllers
                     return BadRequest(new {Success = false, Message = "User Registration Failed."});
                 }
             }
-            catch (System.Exception)
+            catch (Exception ex)
             {
-
-                throw;
+                logger.LogError(ex, "Error come during the User registration");
+                return BadRequest(new { Success = false, Message = "User registration could not completed" });
             }
         }
         /// <summary>
@@ -80,10 +84,10 @@ namespace BookStore.Controllers
                 }
                 
             }
-            catch (System.Exception)
+            catch (Exception ex)
             {
-
-                throw;
+                logger.LogError(ex, "Error come during user login");
+                return BadRequest(new { Success = false, Message = "User Login could not be completed" });
             }
         }
         /// <summary>
@@ -107,10 +111,10 @@ namespace BookStore.Controllers
                     return BadRequest(new { Success = false, Message = "Something went wrong...." });
                 }
             }
-            catch (System.Exception)
+            catch (Exception ex)
             {
-
-                throw;
+                logger.LogError(ex, "Error come during Forget password");
+                return BadRequest(new { Success = false, Message = "Forget password could not be completed" });
             }
         }
         /// <summary>
@@ -136,10 +140,10 @@ namespace BookStore.Controllers
                     return BadRequest(new { Success = false, Message = "Password cannot be updated" });
                 }
             }
-            catch (System.Exception)
+            catch (Exception ex)
             {
-
-                throw;
+                logger.LogError(ex, "Error come during Reset Password");
+                return BadRequest(new { Success = false, Message = "Reset Password could not be completed" });
             }
         }
     }
