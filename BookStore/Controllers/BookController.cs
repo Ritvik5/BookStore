@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
+using Microsoft.Extensions.Logging;
+using System;
 
 namespace BookStore.Controllers
 {
@@ -15,9 +17,11 @@ namespace BookStore.Controllers
     public class BookController : ControllerBase
     {
         private readonly IBookBusiness bookBusiness;
-        public BookController(IBookBusiness bookBusiness)
+        private readonly ILogger logger;
+        public BookController(IBookBusiness bookBusiness,ILogger logger)
         {
             this.bookBusiness = bookBusiness;
+            this.logger = logger;
         }
         /// <summary>
         /// Adding Book authorized by Admin
@@ -41,10 +45,10 @@ namespace BookStore.Controllers
                     return BadRequest(new { Success = false, Message = "Book can't be added." });
                 }
             }
-            catch (System.Exception)
+            catch (Exception ex)
             {
-
-                throw;
+                logger.LogError(ex, "Error come during Adding Book");
+                return BadRequest(new { Success = false, Message = "Adding Book could not completed" });
             }
         }
         /// <summary>
@@ -68,10 +72,10 @@ namespace BookStore.Controllers
                     return BadRequest(new { Success = false, Message = "Book by bookId = " + bookId + " cannot be fetch." });
                 }
             }
-            catch (System.Exception)
+            catch (Exception ex)
             {
-
-                throw;
+                logger.LogError(ex, "Error come during fetching book by Id");
+                return BadRequest(new { Success = false, Message = "Fetching Book could not be completed" });
             }
         }
         /// <summary>
@@ -94,10 +98,10 @@ namespace BookStore.Controllers
                     return BadRequest(new { Success = false,Message = "Can't fetch all books."});
                 }
             }
-            catch (System.Exception)
+            catch (Exception ex)
             {
-
-                throw;
+                logger.LogError(ex, "Error occur during get all Books");
+                return BadRequest(new { Success = false, Message = "Fetching all books could not be completed" });
             }
         }
         /// <summary>
@@ -123,10 +127,10 @@ namespace BookStore.Controllers
                     return BadRequest(new { Success = false, Message = "Books details can not be updated" });
                 }
             }
-            catch (System.Exception)
+            catch (Exception ex)
             {
-
-                throw;
+                logger.LogError(ex, "Error come during updating the book ");
+                return BadRequest(new { Success = false, Message = "Updating books could not be completed" });
             }
         }
         /// <summary>
@@ -151,10 +155,10 @@ namespace BookStore.Controllers
                     return BadRequest(new { success = false, message = "Book can't be deleted" });
                 }
             }
-            catch (System.Exception)
+            catch (Exception ex )
             {
-
-                throw;
+                logger.LogError(ex, "Error come during deleting Book");
+                return BadRequest(new { success = false, Message = "Deleting book could not be completed" });
             }
         }
     }
