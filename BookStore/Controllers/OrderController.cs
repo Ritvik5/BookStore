@@ -3,20 +3,32 @@ using CommonLayer.Model;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
+using System;
 using RepoLayer.Models;
 using System.Security.Claims;
 
 namespace BookStore.Controllers
 {
+    /// <summary>
+    /// Order Controller
+    /// </summary>
     [Route("api/[controller]")]
     [ApiController]
     public class OrderController : ControllerBase
     {
         private readonly IOrderBusiness orderBusiness;
-        public OrderController(IOrderBusiness orderBusiness)
+        private readonly ILogger logger;
+        public OrderController(IOrderBusiness orderBusiness,ILogger logger)
         {
             this.orderBusiness = orderBusiness;
+            this.logger = logger;
         }
+        /// <summary>
+        /// Add Order authorized by user
+        /// </summary>
+        /// <param name="order"> Order Details </param>
+        /// <returns> SMD(Status,Message,Data(Order info)) </returns>
         [Authorize(Roles = "User")]
         [HttpPost]
         [Route("add")]
@@ -45,12 +57,16 @@ namespace BookStore.Controllers
                 
 
             }
-            catch (System.Exception)
+            catch (Exception ex)
             {
-
-                throw;
+                logger.LogError(ex, "Error come during adding order");
+                return BadRequest(new { Success = false, Message = "Adding order could not be completed" });
             }
         }
+        /// <summary>
+        /// View Order authorize by user
+        /// </summary>
+        /// <returns> SMD(Status,Message,Data(List of Orders)) </returns>
         [Authorize(Roles = "User")]
         [HttpGet]
         [Route("view")]
@@ -77,12 +93,17 @@ namespace BookStore.Controllers
                     return BadRequest(new { Success = false, Message = "Admin can't fetch orders " });
                 }
             }
-            catch (System.Exception)
+            catch (Exception ex)
             {
-
-                throw;
+                logger.LogError(ex, "Error come during view order");
+                return BadRequest(new { Success = false, Message = "Viewing Orders could not be completed" });
             }
         }
+        /// <summary>
+        /// Cancel Order authorized by User
+        /// </summary>
+        /// <param name="orderId"> Order Id </param>
+        /// <returns> SMD(Status,Message,Data(Boolean value)) </returns>
         [Authorize(Roles = "User")]
         [HttpDelete]
         [Route("cancel")]
@@ -106,10 +127,10 @@ namespace BookStore.Controllers
                     return BadRequest(new { Success = false, Message = "Admin can't cancel order " });
                 }
             }
-            catch (System.Exception)
+            catch (Exception ex)
             {
-
-                throw;
+                logger.LogError(ex, "Error come during cancel order");
+                return BadRequest(new { Success = false, Message = "Cancel Order could not completed" });
             }
         }
     }
