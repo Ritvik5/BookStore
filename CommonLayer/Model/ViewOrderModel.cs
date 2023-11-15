@@ -1,17 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text;
 
-namespace RepoLayer.Models
+namespace CommonLayer.Model
 {
-    public partial class OrderTable
+    public class ViewOrderModel
     {
         public int OrderId { get; set; }
         public int OrderPrice { get; set; }
         public int OrderQuantity { get; set; }
         public int UserId { get; set; }
         public int AddressId { get; set; }
-
-        public virtual AddressTable Address { get; set; }
-        public virtual UserTable User { get; set; }
     }
 }

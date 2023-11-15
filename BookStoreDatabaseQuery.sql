@@ -79,3 +79,9 @@ ADD AddressID INT;
 ALTER TABLE OrderTable
 ADD FOREIGN KEY(AddressID)
 REFERENCES AddressTable(AddressID);
+
+INSERT INTO AddressTable(UserAddress,City,State,Pincode,UserID)
+VALUES ('Magdi Raste','Bangalore','Karanataka',560056,7);
+
+SELECT * FROM OrderTable;
+

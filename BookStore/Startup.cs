@@ -103,6 +103,8 @@ namespace BookStore
             services.AddScoped<IAdminUserRepo, AdminUserRepo>();
             services.AddScoped<IBookBusiness, BookBusiness>();
             services.AddScoped<IBookRepo, BookRepo>();
+            services.AddScoped<IOrderBusiness, OrderBusiness>();
+            services.AddScoped<IOrderRepo, OrderRepo>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
