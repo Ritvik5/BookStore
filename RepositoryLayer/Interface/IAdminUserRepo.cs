@@ -8,7 +8,7 @@ namespace RepoLayer.Interface
 {
     public interface IAdminUserRepo
     {
-        UserTable Register(UserRegisModel registerModel);
+        UserRegisResult Register(UserRegisModel registerModel);
         string GenerateJwtToken(string email, int userAdminId, string role);
         LoginResultModel Login(UserLoginModel userLoginModel);
         string ForgotPassword(ForgotPassModel forgotPassModel);

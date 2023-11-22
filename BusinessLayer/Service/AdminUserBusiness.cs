@@ -55,7 +55,7 @@ namespace BusinessLayer.Service
             }
         }
 
-        public UserTable Register(UserRegisModel registerModel)
+        public UserRegisResult Register(UserRegisModel registerModel)
         {
             try
             {

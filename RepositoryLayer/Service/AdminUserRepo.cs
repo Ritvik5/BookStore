@@ -32,22 +32,32 @@ namespace RepoLayer.Service
         /// </summary>
         /// <param name="registerModel"> Registration Model</param>
         /// <returns></returns>
-        public UserTable Register(UserRegisModel registerModel)
+        public UserRegisResult Register(UserRegisModel registerModel)
         {
             try
             {
                 UserTable userTable = new UserTable();
-                userTable.UserName = registerModel.Name;
-                userTable.UserEmailId = registerModel.Email;
-                userTable.UserPassword = EncryptedPassword(registerModel.Password);
-                userTable.UserPhoneNumber = registerModel.PhoneNumber;
-                userTable.UserRole = registerModel.Role;
+                userTable.UserName = registerModel.UserName;
+                userTable.UserEmailId = registerModel.UserEmailId;
+                userTable.UserPassword = EncryptedPassword(registerModel.UserPassword);
+                userTable.UserPhoneNumber = registerModel.UserPhoneNumber;
+                userTable.UserRole = registerModel.UserRole;
 
                 bookStoreDBContext.UserTable.Add(userTable);
                 bookStoreDBContext.SaveChanges();
-                if (userTable != null)
+
+                UserRegisResult userModel = new UserRegisResult
                 {
-                    return userTable;
+                    UserId = userTable.UserId,
+                    UserName = userTable.UserName,
+                    UserEmailId = userTable.UserEmailId,
+                    UserPassword = userTable.UserPassword,
+                    UserPhoneNumber = userTable.UserPhoneNumber,
+                    UserRole = userTable.UserRole
+                };
+                if (userModel != null)
+                {
+                    return userModel;
                 }
                 else
                 {
@@ -158,7 +168,7 @@ namespace RepoLayer.Service
         {
             try
             {
-                UserTable user = bookStoreDBContext.UserTable.FirstOrDefault(u => u.UserEmailId == userLoginModel.Email);
+                UserTable user = bookStoreDBContext.UserTable.FirstOrDefault(u => u.UserEmailId == userLoginModel.UserEmailId);
 
                 if (user == null)
                 {
@@ -167,9 +177,9 @@ namespace RepoLayer.Service
 
                 string decryptedPassword = DecryptedPassword(user.UserPassword);
 
-                if (decryptedPassword == userLoginModel.Password)
+                if (decryptedPassword == userLoginModel.UserPassword)
                 {
-                    var token = GenerateJwtToken(userLoginModel.Email, user.UserId, user.UserRole);
+                    var token = GenerateJwtToken(userLoginModel.UserPassword, user.UserId, user.UserRole);
                     LoginResultModel loginResult = new LoginResultModel
                     {
                         Token = token,

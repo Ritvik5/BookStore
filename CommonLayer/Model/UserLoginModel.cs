@@ -6,7 +6,7 @@ namespace CommonLayer.Model
 {
     public class UserLoginModel
     {
-        public string Email { get; set; }
-        public string Password { get; set; }
+        public string UserEmailId { get; set; }
+        public string UserPassword { get; set; }
     }
 }

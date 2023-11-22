@@ -11,6 +11,9 @@ using System.Text;
 
 namespace RepoLayer.Service
 {
+    /// <summary>
+    /// Order Repository
+    /// </summary>
     public class OrderRepo : IOrderRepo
     {
         private readonly BookStoreDBContext bookStoreDBContext;

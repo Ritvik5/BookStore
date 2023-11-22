@@ -65,7 +65,7 @@ namespace BookStore.Controllers
         {
             try
             {
-                var user = bookStoreDBContext.UserTable.FirstOrDefault(u => u.UserEmailId == userLoginModel.Email);
+                var user = bookStoreDBContext.UserTable.FirstOrDefault(u => u.UserEmailId == userLoginModel.UserEmailId);
                 if (user != null && user.UserRole == "Admin")
                 {
                     var result = adminBusiness.Login(userLoginModel);
