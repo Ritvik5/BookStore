@@ -18,8 +18,8 @@ namespace BookStore.Controllers
     public class OrderController : ControllerBase
     {
         private readonly IOrderBusiness orderBusiness;
-        private readonly ILogger logger;
-        public OrderController(IOrderBusiness orderBusiness,ILogger logger)
+        private readonly ILogger<OrderController> logger;
+        public OrderController(IOrderBusiness orderBusiness,ILogger<OrderController> logger)
         {
             this.orderBusiness = orderBusiness;
             this.logger = logger;

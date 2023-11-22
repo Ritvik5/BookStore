@@ -19,8 +19,8 @@ namespace BookStore.Controllers
     {
         private readonly IAdminUserBusiness userBusiness;
         private readonly BookStoreDBContext dbContext;
-        private readonly ILogger logger;
-        public UserController(IAdminUserBusiness userBusiness, BookStoreDBContext dbContext,ILogger logger)
+        private readonly ILogger<UserController> logger;
+        public UserController(IAdminUserBusiness userBusiness, BookStoreDBContext dbContext,ILogger<UserController> logger)
         {
             this.userBusiness = userBusiness;
             this.dbContext = dbContext;
@@ -64,7 +64,7 @@ namespace BookStore.Controllers
         {
             try
             {
-                var user = dbContext.UserTable.FirstOrDefault(u => u.UserEmailId == userLoginModel.Email);
+                var user = dbContext.UserTable.FirstOrDefault(u => u.UserEmailId == userLoginModel.UserEmailId);
 
                 if (user != null && user.UserRole == "User")
                 {

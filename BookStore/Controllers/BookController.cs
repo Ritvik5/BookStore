@@ -17,8 +17,8 @@ namespace BookStore.Controllers
     public class BookController : ControllerBase
     {
         private readonly IBookBusiness bookBusiness;
-        private readonly ILogger logger;
-        public BookController(IBookBusiness bookBusiness,ILogger logger)
+        private readonly ILogger<BookController> logger;
+        public BookController(IBookBusiness bookBusiness,ILogger<BookController> logger)
         {
             this.bookBusiness = bookBusiness;
             this.logger = logger;
